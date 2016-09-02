@@ -2,44 +2,47 @@
 #include <iostream>
 #include <string>
 
-ReadFile* createReadFile(const char* file_name)
+
+//fill your ReadFile class with data (the constructor)
+ReadFile::ReadFile(const char* file_name)
 {
-   ReadFile* rf = new ReadFile;
-
-   rf->input_file.open(file_name);
-   rf->closed = false;
-   rf->_eof = false;
-
-   return rf;
+	input_file.open(file_name);
+	closed = false;
+	_eof = false;
+   
 }
 
-void destroyReadFile(ReadFile* rf)
+//the descructor
+ReadFile::~ReadFile()
 {
-   close(rf);
-   delete rf;
+   //close();
+   //delete[] ;
 }
 
-bool eof(ReadFile* rf)
+//checks to see if it is the end of the file or not
+bool ReadFile::eof(ReadFile* rf)
 {
-   return rf->_eof;
+   return _eof;
 }
 
-void close(ReadFile* rf)
+//closes the file if it is not already closed
+void ReadFile::close(ReadFile* rf)
 {
-   if (!rf->closed)
+   if (!closed)
    {
-      rf->input_file.close();
-      rf->closed = true;
+      input_file.close();
+      closed = true;
    }
 }
 
-String* readLine(ReadFile* rf)
+//actually reads the file and creates a pointer to the location of the data(string) it read in
+String* ReadFile::readLine(ReadFile* rf)
 {
-   if (rf->closed) return NULL;
-   if (rf->_eof) return NULL;
+   if (closed) return NULL;
+   if (_eof) return NULL;
 
    string text;
-   rf->_eof = !(getline(rf->input_file, text));
+   _eof = !(getline(input_file, text));
 
    String* str = new String((const char*) text.c_str());
    return str;
